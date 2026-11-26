@@ -1,0 +1,18 @@
+services:
+  api:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_PATH: /data/traceforge.db
+      CORS_ORIGINS: http://localhost:3000
+    volumes:
+      - traceforge_data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  traceforge_data:
